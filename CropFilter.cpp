@@ -1,9 +1,7 @@
 #include "CropFilter.h"
 
-CropFilter::CropFilter(int32_t width, int32_t height) {
-    width_ = width;
-    height_ = height;
-}
+CropFilter::CropFilter(int32_t width, int32_t height) : width_(width), height_(height) {}
+
 Image CropFilter::applyFilter(Image &img) {
     Image res;
     int32_t width = std::min(width_, img.GetWidth());

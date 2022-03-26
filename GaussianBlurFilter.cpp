@@ -8,25 +8,25 @@ GaussianBlurFilter::GaussianBlurFilter(double sigma) {
 
 Image GaussianBlurFilter::applyFilter(Image &img) {
     double mult1 = 1 / (2 * PI_ * sigmaSquared_);
-    Image temp;
-    temp.SetSize(img.GetWidth(), img.GetHeight());
-    for (size_t x0 = 0; x0 < temp.GetHeight(); ++x0) {
-        for (size_t y0 = 0; y0 < temp.GetWidth(); ++y0) {
+    Image res;
+    res.SetSize(img.GetWidth(), img.GetHeight());
+    for (size_t x0 = 0; x0 < res.GetHeight(); ++x0) {
+        for (size_t y0 = 0; y0 < res.GetWidth(); ++y0) {
             double R = 0;
             double G = 0;
             double B = 0;
-            for (size_t x = 0; x < temp.GetHeight(); ++x) {
-                for (size_t y = 0; y < temp.GetWidth(); ++ y) {
+            for (size_t x = 0; x < res.GetHeight(); ++x) {
+                for (size_t y = 0; y < res.GetWidth(); ++ y) {
                     double multiplier = calculation(x0, y0, x, y) * mult1;
-                    R += img.GetPixel(x, y).GetR() * multiplier;
-                    G += img.GetPixel(x, y).GetG() * multiplier;
-                    B += img.GetPixel(x, y).GetB() * multiplier;
+                    R += img.GetPixel(x, y).GetRed() * multiplier;
+                    G += img.GetPixel(x, y).GetGreen() * multiplier;
+                    B += img.GetPixel(x, y).GetBlue() * multiplier;
                 }
             }
-            temp.SetPixel(x0, y0, Color(R, G, B));
+            res.SetPixel(x0, y0, Color(R, G, B));
         }
     }
-    return temp;
+    return res;
 }
 
 double GaussianBlurFilter::calculation(double x0, double y0, double x, double y) const {

@@ -1,8 +1,6 @@
 #include "BMPReader.h"
 
-BMPReader::BMPReader(std::string path) {
-    path_ = path;
-}
+BMPReader::BMPReader(std::string path) : path_(path) {}
 
 Image BMPReader::ReadBMP() {
     reader_.open(path_, std::ios::in | std::ios::binary);

@@ -1,5 +1,4 @@
-#ifndef IMAGE_PROCESSOR_COLOR_H
-#define IMAGE_PROCESSOR_COLOR_H
+#pragma once
 
 #include <vector>
 #include <iostream>
@@ -7,18 +6,15 @@
 class Color {
 public:
     Color();
-    Color(double R, double G, double B);
+    Color(double red, double green, double blue);
     Color Multiply(const std::vector<double> coeffs) const;
     Color Inverse() const;
     Color Multiply(double x) const;
     Color operator+(const Color &other) const;
     void PrintValues() const;
-    double GetR() const;
-    double GetG() const;
-    double GetB() const;
+    double GetRed() const;
+    double GetGreen() const;
+    double GetBlue() const;
 private:
-    double R_, G_, B_;
+    double red_, green_, blue_;
 };
-
-
-#endif //IMAGE_PROCESSOR_COLOR_H

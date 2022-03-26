@@ -1,5 +1,4 @@
-#ifndef IMAGE_PROCESSOR_IMAGE_H
-#define IMAGE_PROCESSOR_IMAGE_H
+#pragma once
 
 #include <stdint.h>
 #include "Color.h"
@@ -19,6 +18,3 @@ private:
     int32_t height_;
     std::vector<std::vector<Color>> image_;
 };
-
-
-#endif //IMAGE_PROCESSOR_IMAGE_H

@@ -1,5 +1,4 @@
-#ifndef IMAGE_PROCESSOR_CROPFILTER_H
-#define IMAGE_PROCESSOR_CROPFILTER_H
+#pragma once
 
 #include "Filter.h"
 
@@ -11,6 +10,3 @@ private:
     int32_t width_;
     int32_t height_;
 };
-
-
-#endif //IMAGE_PROCESSOR_CROPFILTER_H

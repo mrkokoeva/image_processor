@@ -1,5 +1,4 @@
-#ifndef IMAGE_PROCESSOR_EDGEDETECTIONFILTER_H
-#define IMAGE_PROCESSOR_EDGEDETECTIONFILTER_H
+#pragma once
 
 #include "Filter.h"
 #include "GrayScaleFilter.h"
@@ -11,6 +10,3 @@ public:
 private:
     double threshold_;
 };
-
-
-#endif //IMAGE_PROCESSOR_EDGEDETECTIONFILTER_H

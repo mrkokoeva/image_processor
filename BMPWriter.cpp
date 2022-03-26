@@ -1,8 +1,6 @@
 #include "BMPWriter.h"
 
-BMPWriter::BMPWriter(std::string path) {
-    path_ = path;
-}
+BMPWriter::BMPWriter(std::string path) : path_(path) {}
 
 void BMPWriter::WriteBMP(Image &img) {
     writer_.open(path_, std::ios::out | std::ios::binary);
@@ -21,9 +19,9 @@ void BMPWriter::WriteBMP(Image &img) {
     for (size_t i = 0; i < height; ++i) {
         for (size_t j = 0; j < width; ++j) {
             Color colorPixel = img.GetPixel(i, j);
-            unsigned char R = static_cast<unsigned char>(colorPixel.GetR() * 255.0);
-            unsigned char G = static_cast<unsigned char>(colorPixel.GetG() * 255.0);
-            unsigned char B = static_cast<unsigned char>(colorPixel.GetB() * 255.0);
+            unsigned char R = static_cast<unsigned char>(colorPixel.GetRed() * 255.0);
+            unsigned char G = static_cast<unsigned char>(colorPixel.GetGreen() * 255.0);
+            unsigned char B = static_cast<unsigned char>(colorPixel.GetBlue() * 255.0);
             unsigned char color[3] = {B, G, R};
             writer_.write(reinterpret_cast<char*>(color), 3);
         }

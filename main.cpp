@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include "BMPReader.h"
 #include "BMPWriter.h"
 #include "CropFilter.h"
@@ -24,22 +25,8 @@ void PrintHelp() {
                  "-blur sigma\n";
 }
 
-int main(int argc, char* argv[]) {
-    SetConsoleOutputCP(CP_UTF8);
-    if (argc == 1) {
-        PrintHelp();
-        return 0;
-    }
-    if (argc < 3) {
-        std::cout << "Недостаточно аргументов командной строки";
-        return 0;
-    }
-    std::string path_to_input = argv[1];
-    std::string path_to_output = argv[2];
-
-    BMPReader reader(path_to_input);
-    Image img = reader.ReadBMP();
-
+std::vector<std::shared_ptr<Filter>> ParsedResults(int argc, char* argv[]) {
+    std::vector<std::shared_ptr<Filter>> res;
     size_t idx = 3;
     while (idx < argc) {
         std::string filterType = argv[idx++];
@@ -52,19 +39,15 @@ int main(int argc, char* argv[]) {
                 height = stoi(height_str);
             } catch (std::exception &e) {
                 std::cout << "Неправильные аргументы width, height" << std::endl;
-                return 0;
+                return {};
             }
-            CropFilter filter(width, height);
-            img = filter.applyFilter(img);
+            res.push_back(std::make_shared<CropFilter>(width, height));
         } else if (filterType == "-gs") {
-            GrayScaleFilter filter;
-            img = filter.applyFilter(img);
+            res.push_back(std::make_shared<GrayScaleFilter>());
         } else if (filterType == "-neg") {
-            NegativeFilter filter;
-            img = filter.applyFilter(img);
+            res.push_back(std::make_shared<NegativeFilter>());
         } else if (filterType == "-sharp") {
-            SharpeningFilter filter;
-            img = filter.applyFilter(img);
+            res.push_back(std::make_shared<SharpeningFilter>());
         } else if (filterType == "-edge") {
             double threshold;
             try {
@@ -72,27 +55,51 @@ int main(int argc, char* argv[]) {
                 threshold = stof(threshold_str);
             } catch (std::exception &e) {
                 std::cout << "Неправильный аргумент threshold" << std::endl;
-                return 0;
+                return {};
             }
-            EdgeDetectionFilter filter(threshold);
-            img = filter.applyFilter(img);
+            res.push_back(std::make_shared<EdgeDetectionFilter>(threshold));
         } else if (filterType == "-blur") {
             double sigma;
             try {
                 std::string sigma_str = static_cast<std::string>(argv[idx++]);
                 sigma = stof(sigma_str);
             } catch (std::exception &e) {
-                std::cout << "Неправильный аргумент threshold" << std::endl;
-                return 0;
+                std::cout << "Неправильный аргумент sigma" << std::endl;
+                return {};
             }
-            GaussianBlurFilter filter(sigma);
-            img = filter.applyFilter(img);
+            res.push_back(std::make_shared<GaussianBlurFilter>(sigma));
         } else {
             std::cout << "Неправильные аргументы";
-            return 0;
+            return {};
         }
+    }
+    return res;
+}
+
+void ApplyFilters(std::string& path_to_input, std::string& path_to_output,
+                   std::vector<std::shared_ptr<Filter>> &filters) {
+    BMPReader reader(path_to_input);
+    Image img = reader.ReadBMP();
+    for (auto filter : filters) {
+        img = filter->applyFilter(img);
     }
     BMPWriter writer(path_to_output);
     writer.WriteBMP(img);
+}
+
+int main(int argc, char* argv[]) {
+    SetConsoleOutputCP(CP_UTF8);
+    if (argc == 1) {
+        PrintHelp();
+        return 0;
+    }
+    if (argc < 3) {
+        std::cout << "Недостаточно аргументов командной строки";
+        return 0;
+    }
+    std::string path_to_input = argv[1];
+    std::string path_to_output = argv[2];
+    std::vector<std::shared_ptr<Filter>> filters = ParsedResults(argc, argv);
+    ApplyFilters(path_to_input, path_to_output, filters);
     return 0;
 }

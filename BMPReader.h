@@ -1,5 +1,4 @@
-#ifndef IMAGE_PROCESSOR_BMPREADER_H
-#define IMAGE_PROCESSOR_BMPREADER_H
+#pragma once
 
 #include <fstream>
 #include <vector>
@@ -15,4 +14,3 @@ private:
     std::string path_;
     std::ifstream reader_;
 };
-#endif //IMAGE_PROCESSOR_BMPREADER_H

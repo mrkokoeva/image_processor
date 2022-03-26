@@ -1,51 +1,43 @@
 #include "Color.h"
 
-Color::Color() {
-    this->R_ = 0;
-    this->G_ = 0;
-    this->B_ = 0;
-}
+Color::Color() : red_(0), green_(0), blue_(0) {}
 
-Color::Color(double R, double G, double B) {
-    this->R_ = R;
-    this->G_ = G;
-    this->B_ = B;
-}
+Color::Color(double red, double green, double blue) : red_(red), green_(green), blue_(blue) {}
 
 Color Color::Multiply(const std::vector<double> coeffs) const {
     if (coeffs.size() != 3) {
         return Color();
     }
-    return Color(this->R_ * coeffs[0], this->G_ * coeffs[1], this->B_ * coeffs[2]);
+    return Color(this->red_ * coeffs[0], this->green_ * coeffs[1], this->blue_ * coeffs[2]);
 }
 
 Color Color::Inverse() const {
-    return Color(1 - this->R_, 1 - this->G_, 1 - this->B_);
+    return Color(1 - this->red_, 1 - this->green_, 1 - this->blue_);
 }
 
 Color Color::Multiply(double x) const {
-    return Color(this->R_ * x, this->G_ * x, this->B_ * x);
+    return Color(this->red_ * x, this->green_ * x, this->blue_ * x);
 }
 
 Color Color::operator+(const Color &other) const {
     //может возвращать некорректный цвет :(
-    return Color(this->R_ + other.R_, this->G_ + other.G_, this->B_ + other.B_);
+    return Color(this->red_ + other.red_, this->green_ + other.green_, this->blue_ + other.blue_);
 }
 
 void Color::PrintValues() const {
-    std::cout << R_ << " " << G_ << " " << B_ << "\n";
+    std::cout << red_ << " " << green_ << " " << blue_ << "\n";
 }
 
-double Color::GetR() const {
-    return R_;
+double Color::GetRed() const {
+    return red_;
 }
 
-double Color::GetG() const {
-    return G_;
+double Color::GetGreen() const {
+    return green_;
 }
 
-double Color::GetB() const {
-    return B_;
+double Color::GetBlue() const {
+    return blue_;
 }
 
 
